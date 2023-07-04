@@ -1,0 +1,23 @@
+#cloud-config
+disable_root: true
+timezone: Europe/Moscow
+repo_update: true
+repo_upgrade: true
+apt:
+  preserve_sources_list: true
+packages:
+  - nginx
+runcmd:
+- [ systemctl, nginx-reload ]
+- [ systemctl, enable, nginx.service ]
+- [ systemctl, start, --no-block, nginx.service ]
+- [sh, -c, "echo $(hostname | cut -d '.' -f 1 ) > /var/www/html/index.html"]
+- [ sh, -c, "echo $(ip add) >> /var/www/html/index.html" ]
+users:
+ - name: user
+   groups: sudo
+   shell: /bin/bash
+   sudo: ['ALL (ALL) NOPASSWD: ALL']
+   ssh-authorized-keys:
+     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDqV/wLOkGmdB+lizBGHAb06ZX5FkVXWZ/wlkeA9syJncu118DSTl5rDCdwhA4lXabB0MgVAUCeyqX3JC9kJcxTT8srvRbeIRgTnF01sm03VXs0ji+kEcdBZPV7mP0Qv7plFT2nNKg4n3H/UF3T3exRFVZanNIKd3KcYnmMj7C2dyWOMMMhtpsOzwCCnO/cZN1HWhQ1AqurpDwm9FXF6cl5JgWlyUMtxizDv7aVAJxiCqaMyQVArROTC+PRescBuRleHTO85edv6vSMW8Ypwt6RIB7HW2JAICVArnFTp9ubbsM7K69DAS5hMrI1fUKWxz0wbEFTlI7+vfoVNQsMyp9/9ZzCW17yHSCaOf3Z7iWHnnBsR3DlAJ1Vveute0zPBZcxD5u+BreL3GiWsUPd/LMQQ+V9E4zbwSQvVw/It94G/B7e/IbNOewAIV+7ArpK6sR8p5kar036mo/064hyx+dPFwak6/S44BUZ22npq+nsHyCmONkoCVnvxN4RSZ8OL9M= root@vm1
+
