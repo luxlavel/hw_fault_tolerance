@@ -6,10 +6,15 @@ terraform {
   }
 }
 
-provider "yandex" {
-  token = "y0_AgAAAAAm365DAATuwQAAAADiXIovzX6L_6u1Rp66rcUZBYmr421vZhA"
-  cloud_id = "b1gtu18v39e0nek8s11v"
+locals {
   folder_id = "b1gcclsbauu1i1arfbrt"
+  cloud_id = "b1gtu18v39e0nek8s11v"
+}
+
+provider "yandex" {
+  folder_id = local.folder_id
+  cloud_id = local.cloud_id
+  service_account_key_file = "/home/user/hw_fault_tolerance/authorized_key.json"
   zone = "ru-central1-a"
 }
 
